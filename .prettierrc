@@ -1,0 +1,21 @@
+{
+	"useTabs": true,
+	"tabWidth": 2,
+	"endOfLine": "lf",
+	"proseWrap": "preserve",
+	"parser": "typescript",
+	"printWidth": 80,
+	"trailingComma": "none",
+	"semi": false,
+	"singleQuote": false,
+	"quoteProps": "preserve",
+	"jsxBracketSameLine": false,
+	"bracketSpacing": true,
+	"arrowParens": "always",
+	"htmlWhitespaceSensitivity": "strict",
+	"embeddedLanguageFormatting": "off",
+	"trimTrailingWhitespace": true,
+	"singleAttributePerLine": true,
+	"plugins": ["prettier-plugin-tailwindcss"],
+	"bracketSameLine": false
+}
