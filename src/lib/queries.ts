@@ -120,7 +120,9 @@ export const getAuthUserDetails = async () => {
 				include: {
 					sidebarOption: true,
 					subAccount: {
-						include: { sidebarOption: true }
+						include: {
+							sidebarOption: true
+						}
 					}
 				}
 			},
