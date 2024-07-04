@@ -4,7 +4,9 @@ import { clerkClient, currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 
 import { db } from "./db"
-import { User } from "@prisma/client"
+import { Agency, User } from "@prisma/client"
+
+// * GENERIC FUNCTIONS
 
 /**
  * * Saves an activity log notification.
@@ -204,4 +206,30 @@ export const verifyAndAcceptInvitation = async () => {
 
 		return agency ? agency.agencyId : null
 	}
+}
+
+// * AGENCY RELATED FUNCTIONS
+
+export const updateAgencyDetails = async (
+	agencyId: string,
+	agencyDetails: Partial<Agency>
+) => {
+	const res = await db.agency.update({
+		data: { ...agencyDetails },
+		where: {
+			id: agencyId
+		}
+	})
+
+	return res
+}
+
+export const deleteAgency = async (agencyId: string) => {
+	const res = await db.agency.delete({
+		where: {
+			id: agencyId
+		}
+	})
+
+	return res
 }

@@ -3,13 +3,14 @@ import type { Metadata } from "next"
 import { DM_Sans } from "next/font/google"
 
 import { ThemeProvider } from "@/providers/theme-provider"
+import { Toaster } from "@/components/ui/toaster"
 
 import "./globals.css"
 
 const font = DM_Sans({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-	title: "Pura",
+	title: "Plura",
 	description: "All in one Agency Solution"
 }
 
@@ -31,6 +32,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					{children}
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>
