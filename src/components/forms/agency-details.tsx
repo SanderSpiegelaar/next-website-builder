@@ -11,6 +11,7 @@ import { Loader2 } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import {
 	deleteAgency,
+	initUser,
 	saveActivityLogNotification,
 	updateAgencyDetails
 } from "@/lib/queries"
@@ -96,7 +97,40 @@ const AgencyDetailsForm = ({ data }: Props) => {
 		if (data) form.reset(data)
 	}, [data])
 
-	const handleSubmit = async () => {}
+	const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
+		try {
+			let newUserData
+			let customerId
+			if (!data?.id) {
+				const bodyData = {
+					email: values.companyEmail,
+					name: values.name,
+					shipping: {
+						address: {
+							city: values.city,
+							country: values.country,
+							line1: values.address,
+							postal_code: values.zipCode,
+							state: values.zipCode
+						},
+						name: values.name
+					},
+					address: {
+						city: values.city,
+						country: values.country,
+						line1: values.address,
+						postal_code: values.zipCode,
+						state: values.zipCode
+					}
+				}
+			}
+
+			newUserData = await initUser({ role: "AGENCY_OWNER" })
+
+			// TODO: custId
+			if(!data?.customerId)
+		} catch (error) {}
+	}
 
 	const handleDeleteAgency = async () => {
 		if (!data?.id) return
@@ -110,6 +144,7 @@ const AgencyDetailsForm = ({ data }: Props) => {
 			})
 			router.refresh()
 		} catch (error) {
+			console.log(error)
 			toast({
 				variant: "destructive",
 				title: "Could not delete Agency",
