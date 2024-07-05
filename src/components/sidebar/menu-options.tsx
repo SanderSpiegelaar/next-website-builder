@@ -86,7 +86,7 @@ const MenuOptions = ({
 				className={cn(
 					"fixed top-0 border-r-[1px] bg-background/80 p-6 backdrop-blur-xl",
 					defaultOpen && "z-0 hidden w-[300px] md:inline-block",
-					!defaultOpen && "z-[100px] inline-block w-full md:hidden"
+					!defaultOpen && "z-[100] inline-block w-full md:hidden"
 				)}
 			>
 				<div>
