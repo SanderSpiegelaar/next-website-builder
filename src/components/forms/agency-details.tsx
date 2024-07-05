@@ -1,5 +1,6 @@
 "use client"
 import * as z from "zod"
+import { v4 } from "uuid"
 import React, { useEffect, useState } from "react"
 import { Agency } from "@prisma/client"
 import { useRouter } from "next/navigation"
@@ -13,7 +14,8 @@ import {
 	deleteAgency,
 	initUser,
 	saveActivityLogNotification,
-	updateAgencyDetails
+	updateAgencyDetails,
+	upsertAgency
 } from "@/lib/queries"
 import {
 	AlertDialog,
@@ -128,8 +130,39 @@ const AgencyDetailsForm = ({ data }: Props) => {
 			newUserData = await initUser({ role: "AGENCY_OWNER" })
 
 			// TODO: custId
-			if(!data?.customerId)
-		} catch (error) {}
+			if (!data?.id) {
+				const response = await upsertAgency({
+					id: data?.id ? data.id : v4(),
+					address: values.address,
+					agencyLogo: values.agencyLogo,
+					city: values.city,
+					companyPhone: values.companyPhone,
+					country: values.country,
+					name: values.name,
+					state: values.state,
+					whiteLabel: values.whiteLabel,
+					zipCode: values.zipCode,
+					createdAt: new Date(),
+					updatedAt: new Date(),
+					companyEmail: values.companyEmail,
+					connectAccountId: "",
+					goal: 5
+				})
+				toast({
+					title: "Created Agency",
+					description: "Succesfully created your agency"
+				})
+				if (data?.id) return router.refresh()
+				if (response) return router.refresh()
+			}
+		} catch (error) {
+			console.log(error)
+			toast({
+				variant: "destructive",
+				title: "Could not create Agency",
+				description: "Something went wrong"
+			})
+		}
 	}
 
 	const handleDeleteAgency = async () => {
@@ -327,7 +360,7 @@ const AgencyDetailsForm = ({ data }: Props) => {
 									name="zipCode"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>Zipcpde</FormLabel>
+											<FormLabel>Zipcode</FormLabel>
 											<FormControl>
 												<Input
 													placeholder="Zipcode"

@@ -208,6 +208,11 @@ export const verifyAndAcceptInvitation = async () => {
 	}
 }
 
+/**
+ * * Initializes a user by updating their information in the database and updating their metadata.
+ * @param newUser - The partial user object containing the updated information.
+ * @returns The updated user data.
+ */
 export const initUser = async (newUser: Partial<User>) => {
 	const user = await currentUser()
 	if (!user) return
@@ -232,6 +237,24 @@ export const initUser = async (newUser: Partial<User>) => {
 	})
 
 	return userData
+}
+
+export const getNotificationAndUser = async (agencyId: string) => {
+	try {
+		const response = await db.notification.findMany({
+			where: { agencyId },
+			include: {
+				user: true
+			},
+			orderBy: {
+				createdAt: "desc"
+			}
+		})
+
+		return response
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 // * AGENCY RELATED FUNCTIONS
@@ -310,5 +333,8 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
 				}
 			}
 		})
-	} catch (error) {}
+		return agencyDetails
+	} catch (error) {
+		console.log(error)
+	}
 }
