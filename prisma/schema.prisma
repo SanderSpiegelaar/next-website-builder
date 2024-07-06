@@ -96,7 +96,7 @@ model Permissions {
   email                   String
   user                    User               @relation(fields: [email], references: [email], onDelete: Cascade)
   subAccountId            String
-  SubAccount              SubAccount         @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
+  subAccount              SubAccount         @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
   access                  Boolean
 
   @@index([subAccountId])

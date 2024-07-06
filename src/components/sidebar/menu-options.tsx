@@ -25,9 +25,8 @@ import {
 import Link from "next/link"
 import { useModal } from "@/providers/modal-provider"
 import CustomModal from "../global/custom-modal"
-import SubAccountDetailsForm from "../forms/subaccount-details"
+import SubAccountDetailsForm from "@/components/forms/subaccount-details-form"
 import { Separator } from "../ui/separator"
-import { type ClassValue } from "clsx"
 import { icons } from "@/lib/constants"
 
 type Props = {
@@ -241,7 +240,7 @@ const MenuOptions = ({
 														subheading="You can switch between your agency account and the subaccount from the sidebar"
 													>
 														<SubAccountDetailsForm
-															agencyDetails={user?.Agency as Agency}
+															agencyDetails={user?.agency as Agency}
 															userId={user?.id as string}
 															userName={user?.name}
 														/>

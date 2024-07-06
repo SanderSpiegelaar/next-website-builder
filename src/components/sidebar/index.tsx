@@ -13,6 +13,8 @@ const Sidebar = async ({ id, type }: Props) => {
 	if (!user) return null
 	if (!user.agency) return
 
+	console.log({ user })
+
 	const details =
 		type === "agency"
 			? user?.agency

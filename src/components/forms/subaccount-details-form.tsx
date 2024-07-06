@@ -121,6 +121,7 @@ const SubAccountDetailsForm: React.FC<SubAccountDetailsProps> = ({
 				title: "Oppse!",
 				description: "Could not save sub account details."
 			})
+			console.log(error)
 		}
 	}
 

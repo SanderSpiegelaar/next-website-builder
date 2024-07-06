@@ -109,6 +109,12 @@ export const saveActivityLogNotification = async ({
 }
 
 /**
+ * !
+ * ! END GENERICS RELATED FUNCTIONS
+ * !
+ */
+
+/**
  * *
  * * USER RELATED FUNCTIONS
  * *
@@ -266,6 +272,61 @@ export const getNotificationAndUser = async (agencyId: string) => {
 	}
 }
 
+export const getUserPermissions = async (userId: string) => {
+	const response = await db.user.findUnique({
+		where: { id: userId },
+		select: { permissions: { include: { subAccount: true } } }
+	})
+
+	return response
+}
+
+export const updateUser = async (user: Partial<User>) => {
+	const authUser = await currentUser()
+
+	const response = await db.user.update({
+		where: { email: user.email },
+		data: { ...user }
+	})
+
+	await clerkClient.users.updateUserMetadata(response.id, {
+		privateMetadata: {
+			role: user.role || "SUBACCOUNT_USER"
+		}
+	})
+
+	return response
+}
+
+export const changeUserPermissions = async (
+	permissionId: string | undefined,
+	userEmail: string,
+	subAccountId: string,
+	permission: boolean
+) => {
+	try {
+		const response = await db.permissions.upsert({
+			where: { id: permissionId },
+			update: { access: permission },
+			create: {
+				access: permission,
+				email: userEmail,
+				subAccountId: subAccountId
+			}
+		})
+
+		return response
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+/**
+ * !
+ * ! END USER RELATED FUNCTIONS
+ * !
+ */
+
 /**
  * *
  * * AGENCY RELATED FUNCTIONS
@@ -353,6 +414,12 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
 }
 
 /**
+ * !
+ * ! END AGENCY RELATED FUNCTIONS
+ * !
+ */
+
+/**
  * *
  * * SUBACCOUNT RELATED FUNCTIONS
  * *
@@ -365,7 +432,7 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
 			agency: {
 				id: subAccount.agencyId
 			},
-			role: "AGENCY_ADMIN"
+			role: "AGENCY_OWNER"
 		}
 	})
 
@@ -440,3 +507,9 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
 
 	return response
 }
+
+/**
+ * !
+ * ! END SUBACCOUNT RELATED FUNCTIONS
+ * !
+ */
