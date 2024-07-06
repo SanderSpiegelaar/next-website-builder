@@ -508,6 +508,25 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
 	return response
 }
 
+export const getSubAccountDetails = async (subAccountId: string) => {
+	const response = await db.subAccount.findUnique({
+		where: {
+			id: subAccountId
+		}
+	})
+	return response
+}
+
+export const deleteSubAccount = async (subAccountId: string) => {
+	const response = await db.subAccount.delete({
+		where: {
+			id: subAccountId
+		}
+	})
+
+	return response
+}
+
 /**
  * !
  * ! END SUBACCOUNT RELATED FUNCTIONS
